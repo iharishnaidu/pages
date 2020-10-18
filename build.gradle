@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.prototype'
@@ -25,13 +26,40 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+
+	implementation ("org.springdoc:springdoc-openapi-core:1.1.49")
+	implementation ("org.springdoc:springdoc-openapi-ui:1.1.49")
+	implementation ("org.openapitools:openapi-generator-gradle-plugin:3.3.4")
+
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+
+	compile group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.5.2'
+	compile group: 'org.mockito', name: 'mockito-core', version: '3.3.0'
+	compile ("org.meanbean:meanbean:2.0.3")
 }
 
 test {
 	useJUnitPlatform()
+
+	jacoco {
+		destinationFile = file("$buildDir/jacoco/test.exec")
+		classDumpDir = file("$buildDir/jacoco/classpathdumps")
+	}
+	//To Ensure Tests Run in test profile with H2 database
+	systemProperty 'spring.profiles.active', 'test'
 }
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled false
+		html.destination file("${buildDir}/jacocoHtml")
+	}
+
+}
+
+test.finalizedBy(project.tasks.jacocoTestReport)
