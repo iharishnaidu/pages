@@ -1,6 +1,7 @@
 package com.prototype.pages.service.impl;
 
 import com.prototype.pages.domain.Titans;
+import com.prototype.pages.mapper.TitanVO;
 import com.prototype.pages.repository.TitansRepository;
 import com.prototype.pages.service.inf.ITitansService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,9 @@ public class TitansService implements ITitansService {
         return titansRepository.findAll(paging);
     }
 
+    public Page<TitanVO> findTitansPage(int pageNo) {
+
+        Pageable paging = PageRequest.of(pageNo, 20);
+        return titansRepository.findTitansPage(paging);
+    }
 }
