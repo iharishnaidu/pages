@@ -16,7 +16,7 @@ import javax.persistence.*;
 })
 @NamedNativeQueries({
         @NamedNativeQuery(name = "Titans.findTitansPage", query="select titan_id, titan_name from titans", resultSetMapping = "Titans.findTitansPageMapping"),
-        @NamedNativeQuery(name = "Titans.findTitansPage.count", resultSetMapping = "titansMapping.count", query = "Select count(*) as count from titans")
+        @NamedNativeQuery(name = "Titans.findTitansPage.count", resultSetMapping = "titansMapping.count", query = "Select count(titan_id) as count from titans")
 })
 
 @Entity
