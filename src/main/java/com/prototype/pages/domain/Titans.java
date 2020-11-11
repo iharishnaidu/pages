@@ -11,11 +11,19 @@ import javax.persistence.*;
         @SqlResultSetMapping(name = "titansMapping.count", columns = @ColumnResult(name = "count")),
         @SqlResultSetMapping(name= "Titans.findTitansPageMapping", classes = @ConstructorResult(targetClass = TitanVO.class, columns = {
                 @ColumnResult(name = "titan_id", type = Long.class),
-                @ColumnResult(name = "titan_name", type = String.class)
-        }))
+                @ColumnResult(name = "titan_name", type = String.class),
+                @ColumnResult(name="boy_id", type = Long.class),
+                @ColumnResult(name="boy_name", type = String.class)
+        })),
+        /*@SqlResultSetMapping(name= "Titans.findTitansPageMapping", columns = {
+                @ColumnResult(name = "titan_id", type = Long.class),
+                @ColumnResult(name = "titan_name", type = String.class),
+                @ColumnResult(name="boy_id", type = Long.class),
+                @ColumnResult(name="boy_name", type = String.class)
+        })*/
 })
 @NamedNativeQueries({
-        @NamedNativeQuery(name = "Titans.findTitansPage", query="select titan_id, titan_name from titans", resultSetMapping = "Titans.findTitansPageMapping"),
+        @NamedNativeQuery(name = "Titans.findTitansPage", query="select t.titan_id, t.titan_name, b.boy_id, b.boy_name from titans t inner join boys b on t.titan_id = b.boy_id", resultSetMapping = "Titans.findTitansPageMapping"),
         @NamedNativeQuery(name = "Titans.findTitansPage.count", resultSetMapping = "titansMapping.count", query = "Select count(titan_id) as count from titans")
 })
 
